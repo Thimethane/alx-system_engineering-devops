@@ -1,2 +1,2 @@
-#!/bash/bin
-sudo su betty
+#!/bin/bash
+su -l betty
