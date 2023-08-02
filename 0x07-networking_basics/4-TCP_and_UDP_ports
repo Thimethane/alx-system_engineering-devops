@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Get listening sockets and their PIDs
+netstat -tuln
