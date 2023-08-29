@@ -1,0 +1,37 @@
+https://drive.google.com/file/d/1vZfN6V4CIrDaC3VgyWC49QN03_Klk0Gl/view?usp=sharing
+
+let's design a three-server web infrastructure that hosts www.foobar.com securely, serves encrypted traffic, and includes monitoring. We'll address the requirements and explain the specifics, including why each element is added and potential issues.
+
+Step 1: Overview of the Secured Infrastructure
+
+In this design, we have three servers for redundancy and load distribution. Each server has firewalls, SSL certificates for HTTPS, and monitoring clients for Sumo Logic or other monitoring services.
+
+Step 2: Component Explanation
+
+Three Servers: We have three servers for redundancy and load distribution, ensuring high availability and distributing incoming traffic evenly.
+
+Firewalls: Firewalls are added to each server for security. They act as a barrier to control and filter incoming and outgoing network traffic, protecting the servers from unauthorized access and threats.
+
+SSL Certificate: An SSL certificate is added to enable HTTPS. It encrypts the data exchanged between the server and the user's browser, ensuring data privacy and security.
+
+Monitoring Clients (Data Collectors): Each server has monitoring clients installed, which collect data and send it to a central monitoring service like Sumo Logic. Monitoring helps detect issues, track server performance, and ensure the system's health.
+
+Step 3: Specifics
+
+Firewalls: Firewalls are added to enhance security by controlling incoming and outgoing traffic. They allow only necessary traffic, reducing the attack surface and protecting against unauthorized access.
+
+HTTPS (SSL/TLS): Traffic is served over HTTPS to encrypt data in transit. This secures sensitive information, such as login credentials and payment details, from eavesdropping and tampering.
+
+Monitoring: Monitoring tools collect data on server performance, resource utilization, error logs, and more. This data helps identify issues, track trends, and optimize the infrastructure for reliability.
+
+Data Collection: Monitoring clients (data collectors) gather data on various metrics, events, and logs from each server. They transmit this data to the central monitoring service, which processes and analyzes it.
+
+Monitoring Web Server QPS (Queries Per Second): To monitor web server QPS, set up monitoring rules that track the number of incoming requests per second. You can configure alerts to notify you if QPS exceeds or falls below acceptable thresholds, enabling proactive management.
+
+Step 4: Issues
+
+Terminating SSL at the Load Balancer Level: While terminating SSL at the load balancer level can improve performance, it can also be an issue because it means the traffic between the load balancer and web servers is unencrypted. To mitigate this, you can use end-to-end encryption by encrypting traffic between the load balancer and web servers as well.
+
+Single MySQL Server Capable of Accepting Writes: Having only one MySQL server capable of accepting writes poses a single point of failure (SPOF) for the database. Consider implementing database replication or clustering to ensure high availability and fault tolerance.
+
+Identical Server Components: Using servers with identical components (database, web server, and application server) might be a problem because it doesn't provide diversity in case of software or hardware vulnerabilities affecting a specific component. Consider diversifying server roles to improve fault tolerance.

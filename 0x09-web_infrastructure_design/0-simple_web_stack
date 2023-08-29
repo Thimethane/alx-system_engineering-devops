@@ -1,0 +1,46 @@
+https://drive.google.com/file/d/1BebL8N-uiUhJBdahJaWmf4AW6S_8YeVQ/view?usp=sharing
+ 
+ 
+ let's design a simple web infrastructure on a whiteboard that hosts a website accessible via www.foobar.com. This infrastructure will consist of one server with a LAMP stack (Linux, Apache, MySQL, PHP) to meet the requirements.
+
+Step 1: User Accessing the Website
+
+Imagine a user who wants to access website by typing "www.foobar.com" into their web browser.
+
+Step 2: Domain Name (DNS)
+
+Domain Name: "www.foobar.com"
+DNS Record: www.foobar.com is configured with an "A" record that points to server's IP address, which is 8.8.8.8.
+Step 3: The Server
+
+A server is a physical or virtual machine that hosts and serves web applications and content. In our case, it's a single server with the IP address 8.8.8.8.
+
+Step 4: The Web Server (Nginx)
+
+The web server (Nginx) plays the role of receiving incoming HTTP requests from users' browsers and serving static content and routing dynamic requests to the application server.
+It listens for requests on port 80 (HTTP) and 443 (HTTPS).
+
+Step 5: The Application Server
+
+The application server is responsible for processing dynamic content, executing server-side code, and generating HTML pages.
+It communicates with the web server to process requests and deliver the appropriate responses.
+The application codebase resides on the server and contains the logic of my website.
+
+Step 6: The Database (MySQL)
+
+The database (MySQL) stores and manages the structured data used by My web application. This may include user profiles, articles, product information, etc.
+The application server communicates with the database server to fetch and store data.
+
+Step 7: Communication with User's Computer
+
+When the user requests the website (www.foobar.com), their computer sends an HTTP request to the server's IP address (8.8.8.8) via the internet.
+The DNS system resolves the domain name to the server's IP address, allowing the request to reach the server.
+
+
+Issues with this Infrastructure:
+
+Single Point of Failure (SPOF): This setup has a single server. If it fails due to hardware issues, software errors, or other problems, the website will become unavailable. To address this, you can consider implementing redundancy, such as multiple servers or failover mechanisms.
+
+Downtime During Maintenance: When performing maintenance, such as deploying new code or updates, the web server may need to be restarted. During this time, the website may experience downtime. To minimize downtime, you can use rolling deployments, load balancers, and backup servers.
+
+Scalability: This infrastructure may struggle to handle a significant increase in incoming traffic. Scaling horizontally by adding more servers and distributing traffic among them can help address scalability concerns.

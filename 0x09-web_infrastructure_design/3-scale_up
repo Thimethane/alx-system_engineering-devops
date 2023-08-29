@@ -1,0 +1,24 @@
+https://drive.google.com/file/d/1uKZ0IGvZy1dk02JMbOyJ40LeMZ-E9N0p/view?usp=sharing
+
+
+Step 1: Overview of the Infrastructure
+
+In this modified design, we will add one more server to the infrastructure, separating the components (web server, application server, and database) onto their own servers. Additionally, we will configure HAproxy as a load balancer cluster to ensure high availability.
+
+Step 2: Component Explanation
+
+Two Servers (Web Server, Application Server, Database): We have two servers, each dedicated to one of the components: web server, application server, and database. This separation improves resource isolation, security, and scalability.
+
+Load Balancer (HAproxy): HAproxy is configured as a load balancer cluster with the two web servers. This ensures that even if one load balancer fails, the other can continue distributing traffic, enhancing availability.
+
+Step 3: Specifics
+
+Separating Components: By splitting components onto their own servers, we improve security and resource management. The web server, application server, and database server can be individually scaled, secured, and optimized to their specific needs.
+
+Load Balancer Cluster: Configuring HAproxy as a load balancer cluster ensures high availability and fault tolerance for distributing incoming traffic. If one load balancer becomes unavailable, the other can seamlessly take over, preventing downtime.
+
+Step 4: Rationale
+
+Separating Components: We add separate servers for each component (web server, application server, database) to achieve better resource isolation and scalability. This separation allows us to fine-tune the performance and security of each component independently. For example, the web server can be optimized for serving static content, while the application server can handle dynamic requests efficiently. The database server can be tuned for data storage and retrieval.
+
+Load Balancer Cluster: The load balancer cluster is added to ensure high availability and fault tolerance for distributing incoming traffic. If one load balancer fails, the other can continue to route traffic to the available servers, minimizing downtime and improving the overall reliability of the infrastructure.

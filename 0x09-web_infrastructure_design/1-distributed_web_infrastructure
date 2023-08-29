@@ -1,0 +1,50 @@
+https://drive.google.com/file/d/1ThzJLKw5BEZv-fsS_zy-v3_WNhRE1cbq/view?usp=sharing
+
+let's design a more robust three-server web infrastructure that hosts the website www.foobar.com, addressing the requirements and explaining the specifics, including the rationale for each component and potential issues:
+
+Step 1: Overview of the Infrastructure
+
+In this design, we have three servers: two application servers and one database server. A load balancer (HAproxy) distributes traffic between the two application servers. The web server (Nginx) and application files are deployed on each application server. We'll use MySQL as our database management system.
+
+Step 2: Component Explanation
+
+Two Servers (Application Servers): We add an extra application server for redundancy and load distribution. If one application server fails, the other can still handle incoming requests.
+
+Web Server (Nginx): Nginx is responsible for serving static content, handling SSL termination (HTTPS), and routing requests to the application servers. It improves performance and security.
+
+Load Balancer (HAproxy): HAproxy balances incoming requests across the two application servers using a distribution algorithm. It ensures high availability, scalability, and even distribution of traffic.
+
+Set of Application Files (Codebase): The website's codebase contains the application logic and content. It's replicated on both application servers to maintain consistency.
+
+Database (MySQL): MySQL stores and manages the website's data. In this design, it's a single primary-replica (master-slave) cluster.
+
+Step 3: Specifics
+
+Load Balancer Algorithm: HAproxy is configured with a round-robin distribution algorithm. It evenly distributes requests among the application servers in a cyclic manner.
+
+Active-Active Setup vs. Active-Passive Setup:
+
+Active-Active Setup: Both application servers are actively serving traffic simultaneously. This setup provides load distribution and redundancy but requires session management to avoid data inconsistencies.
+Active-Passive Setup: One application server is active, serving traffic, while the other is in standby. The standby server takes over only if the active server fails. Active-passive is simpler but may have lower resource utilization.
+Database Primary-Replica (Master-Slave) Cluster:
+
+In this setup, the database consists of two nodes: the Primary (Master) and the Replica (Slave).
+The Primary node is the authoritative source for data writes and updates. Application writes go to the Primary.
+The Replica node replicates data from the Primary and serves read-only queries. It provides redundancy and scalability for read-heavy workloads.
+Difference Between Primary and Replica in Regards to the Application:
+
+The application sends write (insert/update) queries to the Primary database node to maintain data consistency.
+Read queries (select) can be sent to either the Primary or Replica nodes, depending on the application's read-write distribution strategy.
+The application needs to handle failover scenarios gracefully, switching to the Replica if the Primary node becomes unavailable.
+
+Step 4: Issues
+
+Single Point of Failure (SPOF): The load balancer can become a SPOF. If it fails, traffic can't reach the application servers. To address this, consider deploying a redundant load balancer or using a cloud-based load balancing service.
+
+Security Issues:
+
+Lack of Firewall: The infrastructure lacks a firewall, leaving it vulnerable to attacks. Implementing a firewall is crucial for network security.
+No HTTPS: There's no HTTPS termination on the load balancer. To secure data in transit, add SSL termination to Nginx.
+Monitoring: The infrastructure lacks monitoring and alerting mechanisms. Implement monitoring tools to detect issues and ensure proactive management.
+
+Scalability: This design doesn't provide horizontal scalability for the database. Consider implementing sharding or using a database cluster for improved scalability.
