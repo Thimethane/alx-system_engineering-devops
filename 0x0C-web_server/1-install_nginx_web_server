@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Update package lists for upgrades and new package installations
+apt-get update -y
+# Install nginx web server
+apt-get install nginx -y
+# Create a default index.html file
+echo "Hello World!" > /var/www/html/index.nginx-debian.html
+# Start nginx (since we can't use systemctl)
+service nginx start

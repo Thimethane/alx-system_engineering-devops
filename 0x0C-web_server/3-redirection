@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Update package lists for upgrades and new package installations
+apt-get update -y
+
+# Install Nginx
+apt-get install nginx -y
+
+# Configure the Nginx redirection
+echo 'server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    server_name _;
+
+    location /redirect_me {
+        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+    }
+}' > /etc/nginx/sites-available/redirect_me
+
+# Create a symbolic link to enable the configuration
+ln -s /etc/nginx/sites-available/redirect_me /etc/nginx/sites-enabled/
+
+# Remove the default Nginx configuration
+rm /etc/nginx/sites-enabled/default
+
+# Restart Nginx
+service nginx restart
