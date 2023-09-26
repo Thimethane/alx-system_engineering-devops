@@ -1,36 +1,7 @@
 #!/usr/bin/env bash
 
 # File: nginx_config.pp
-
-# Install Nginx package
-package { 'nginx':
-  ensure => 'installed',
-}
-
-# Ensure Nginx service is running and enabled
-service { 'nginx':
-  ensure => 'running',
-  enable => true,
-}
-
-# Configure Nginx default site to listen on port 80
-file { '/etc/nginx/sites-available/default':
-  ensure  => 'file',
-  content => "
-    server {
-        listen 80 default_server;
-        listen [::]:80 default_server;
-
-        server_name _;
-
-        location / {
-            echo 'Hello World!';
-        }
-
-        location /redirect_me {
-            return 301 https://github.com/Thimethane;
-        }
-    }
-  ",
-  notify  => Service['nginx'],
+exec {'install':
+  provider => shell,
+  command  => 'sudo apt-get -y update ; sudo apt-get -y install nginx ; echo "Hello World!" | sudo tee /var/www/html/index.nginx-debian.html ; sudo sed -i "s/server_name _;/server_name _;\n\trewrite ^\/redirect_me https:\/\/github.com\/Thimethane permanent;/" /etc/nginx/sites-available/default ; sudo service nginx start',
 }
