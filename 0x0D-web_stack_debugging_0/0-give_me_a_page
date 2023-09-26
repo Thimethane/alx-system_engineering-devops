@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# Update the package list
+apt-get update
+
+# Install Apache web server
+apt-get install -y apache2
+
+# Start the Apache service
+service apache2 start
+
+# Create an HTML file with the content "Hello Holberton"
+echo '<html><body>Hello Holberton</body></html>' > /var/www/html/index.html
