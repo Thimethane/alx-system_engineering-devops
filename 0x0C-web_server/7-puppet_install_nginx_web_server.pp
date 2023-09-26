@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # File: nginx_config.pp
 
 # Install Nginx package
