@@ -28,4 +28,11 @@ After setting up the web servers and load balancer, the system will distribute r
 You can test by sending HTTP requests to the load balancer IP and observing the X-Served-By header in the response.
 curl -Is [LOAD_BALANCER_IP]
 
+Custom HTTP Response Header using Puppet
+
+To configure a custom HTTP response header using Puppet, you can use the 2-puppet_custom_http_response_header.pp manifest. This manifest configures Nginx to add a custom HTTP header X-Served-By with the hostname of the server Nginx is running on.
+
+Usage:
+sudo puppet apply 2-puppet_custom_http_response_header.pp
+
 Contributer: Timothee RINGUYENEZA <thimethane@gmail.com>
