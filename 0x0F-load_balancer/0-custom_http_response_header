@@ -22,4 +22,4 @@ sed -i '
   \tadd_header X-Served-By "$HOSTNAME";/
 ' /etc/nginx/nginx.conf
 # Reload Nginx to apply the changes
-sudo service nginx restart
+service nginx start
