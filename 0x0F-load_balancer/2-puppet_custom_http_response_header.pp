@@ -1,46 +1,24 @@
 # Puppet manifest to configure custom HTTP response header
-
-# Install Nginx package
-package { 'nginx':
-  ensure => 'installed',
+exec {'update':
+  provider => shell,
+  command  => 'sudo apt-get -y update',
+  before   => Exec['install Nginx'],
 }
 
-# Configure Nginx with the custom HTTP response header
-file { '/etc/nginx/sites-available/custom_header':
-  ensure  => 'file',
-  content => "server {
-                listen 80 default_server;
-                listen [::]:80 default_server;
-
-                server_name _;
-
-                location / {
-                    return 200 '\$host is being served by: \$hostname\n';
-                }
-
-                add_header X-Served-By \$hostname;
-            }",
+exec {'install Nginx':
+  provider => shell,
+  command  => 'sudo apt-get -y install nginx',
+  before   => Exec['add_header'],
 }
 
-# Create a symbolic link to enable the configuration
-file { '/etc/nginx/sites-enabled/custom_header':
-  ensure => 'link',
-  target => '/etc/nginx/sites-available/custom_header',
+exec { 'add_header':
+  provider    => shell,
+  environment => ["HOST=${hostname}"],
+  command     => 'sudo sed -i "s/include \/etc\/nginx\/sites-enabled\/\*;/include \/etc\/nginx\/sites-enabled\/\*;\n\tadd_header X-Served-By \"$HOST\";/" /etc/nginx/nginx.conf',
+  before      => Exec['restart Nginx'],
 }
 
-# Remove the default Nginx configuration
-file { '/etc/nginx/sites-enabled/default':
-  ensure => 'absent',
-}
-
-# Test the Nginx configuration
-exec { 'nginx_test':
-  command => 'nginx -t',
-}
-
-# Restart Nginx to apply the changes
-service { 'nginx':
-  ensure  => 'running',
-  enable  => true,
-  require => [File['/etc/nginx/sites-enabled/custom_header'], Exec['nginx_test']],
+exec { 'restart Nginx':
+  provider => shell,
+  command  => 'sudo service nginx restart',
 }
