@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+# Function to get DNS record information
+get_dns_record() {
+    local domain="$1"
+    local subdomain="$2"
+
+    # Use dig command to get DNS record information
+    local record
+    record=$(dig +short "${subdomain}.${domain}")
+
+    # Check if the record exists
+    if [[ -z "$record" ]]; then
+        echo "The subdomain $subdomain does not exist."
+    else
+        # Use awk to parse the record
+        local record_type
+        local destination
+        record_type=$(echo "$record" | awk '{print $4}')
+        destination=$(echo "$record" | awk '{print $5}')
+
+        echo "The subdomain $subdomain is a $record_type record and points to $destination"
+    fi
+}
+
+# Check if domain argument is provided
+if [[ -z "$1" ]]; then
+    echo "Please provide a domain name."
+    exit 1
+fi
+
+# Check if subdomain argument is provided
+if [[ -n "$2" ]]; then
+    # Get DNS record for the specified subdomain
+    get_dns_record "$1" "$2"
+else
+    # Get DNS records for default subdomains
+    for subdomain in www lb-01 web-01 web-02; do
+        get_dns_record "$1" "$subdomain"
+    done
+fi
