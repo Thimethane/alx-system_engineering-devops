@@ -1,23 +1,6 @@
 #!/usr/bin/env bash
-
 # Check if Nginx is installed
-if ! command -v nginx &> /dev/null; then
-    # Update package lists for upgrades and new package installations
-    apt-get update -y
-
-    # Install Nginx
-    apt-get install nginx -y
-fi
-
-# Start Nginx service
-service nginx start
-
-# Ensure Nginx is set to start at boot
-update-rc.d nginx defaults
-
-# Check if Nginx is listening on port 80
-if ! netstat -tuln | grep :80 &> /dev/null; then
-    echo "Nginx is not listening on port 80. Please check your configuration."
-else
-    echo "Nginx is running and listening on port 80."
-fi
+sed -i "s/listen 8080 default_server;/listen 80 default_server;/" /etc/nginx/sites-enabled/default
+sed -i "s/listen \[::\]:8080 default_server ipv6only=on;/listen \[::\]:80 default_server;/" /etc/nginx/sites-enabled/default
+sed -i "s/ ipv6only=on//" /etc/nginx/sites-available/default
+service nginx restart

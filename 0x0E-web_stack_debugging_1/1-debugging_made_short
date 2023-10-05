@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 # Update package lists for upgrades and new package installations
-apt-get update
-apt-get -y install nginx
-service nginx start
+sed -i "s/8080/80/g" /etc/nginx/sites-enabled/default
+service nginx restart
+kill -9 "$(cat /run/nginx.pid)"
