@@ -1,25 +1,42 @@
 #!/usr/bin/env bash
 # Update the package list
-apt-get -y update
+sudo apt update
 
 # Install Nginx
-apt-get -y install nginx
+sudo apt install -y nginx
+
+# Get the hostname of the server
+HOSTNAME=$(uname -n)
 
 # Configure Nginx with the custom HTTP response header
-echo "Hello World!" > /var/www/html/index.nginx-debian.html
-echo "Ceci n'est pas une page" > /usr/share/nginx/html/custom_404.html
-sed -i "
-  s/server_name _;/&\n\
-  \trewrite ^\/redirect_me https:\/\/github.com\/Thimethane permanent;\n\n\
-  \terror_page 404 \/custom_404.html;\n\
-  \tlocation = \/custom_404.html {\n\
-  \t\troot \/usr\/share\/nginx\/html;\n\
-  \t\tinternal;\n\
-  \t}/
-" /etc/nginx/sites-available/default
-sed -i "
-  s/include \/etc\/nginx\/sites-enabled\/\*;/&\n\
-  \tadd_header X-Served-By "$HOSTNAME";/
-" /etc/nginx/nginx.conf
+sudo bash -c "cat > /etc/nginx/sites-available/custom_header <<EOL
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    server_name _;
+
+    location / {
+        return 200 '\$host is being served by: $HOSTNAME\n';
+    }
+
+    add_header X-Served-By $HOSTNAME;
+}
+EOL"
+
+# Remove the default configuration to avoid duplicate default server
+sudo rm /etc/nginx/sites-enabled/default
+
+# Create a symbolic link if it doesn't exist, remove and recreate it if it exists
+if [ ! -e "/etc/nginx/sites-enabled/custom_header" ]; then
+    sudo ln -s /etc/nginx/sites-available/custom_header /etc/nginx/sites-enabled/
+else
+    sudo rm /etc/nginx/sites-enabled/custom_header
+    sudo ln -s /etc/nginx/sites-available/custom_header /etc/nginx/sites-enabled/
+fi
+
+# Test the Nginx configuration
+sudo nginx -t
+
 # Reload Nginx to apply the changes
-service nginx start
+sudo service nginx start
