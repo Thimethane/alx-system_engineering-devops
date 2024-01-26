@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""Python script that exports data in JSON format"""
 
 import json
 import requests
@@ -6,6 +7,16 @@ import sys
 
 
 def get_employee_todo_progress(employee_id):
+    """
+    Fetches employee information and their TODO list,
+    then exports data to a JSON file.
+
+    Parameters:
+    - employee_id (int): The ID of the employee.
+
+    Returns:
+    None
+    """
     base_url = "https://jsonplaceholder.typicode.com"
     user_url = f"{base_url}/users/{employee_id}"
     todos_url = f"{base_url}/todos?userId={employee_id}"
@@ -24,9 +35,14 @@ def get_employee_todo_progress(employee_id):
         # Create JSON data
         json_data = {
             str(user_id): [
-                {"task": todo["title"], "completed": todo["completed"],
-                 "username": username} for todo in todos_data]
-                 }
+                {
+                    "task": todo["title"],
+                    "completed": todo["completed"],
+                    "username": username,
+                }
+                for todo in todos_data
+            ]
+        }
 
         # Write JSON data to a file
         json_filename = f"{user_id}.json"

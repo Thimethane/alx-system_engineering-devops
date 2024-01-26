@@ -1,10 +1,22 @@
 #!/usr/bin/python3
+"""Python script that exports data in CSV format"""
+
 import csv
 import requests
 import sys
 
 
 def get_employee_todo_progress(employee_id):
+    """
+    Fetches employee information and their TODO list,
+    then exports data to a CSV file.
+
+    Parameters:
+    - employee_id (int): The ID of the employee.
+
+    Returns:
+    None
+    """
     base_url = "https://jsonplaceholder.typicode.com"
     user_url = f"{base_url}/users/{employee_id}"
     todos_url = f"{base_url}/todos?userId={employee_id}"
@@ -27,11 +39,10 @@ def get_employee_todo_progress(employee_id):
 
             # Write CSV records
             for todo in todos_data:
-                task_completed_status = "True" if todo[
-                    "completed"] else "False"
+                task_completed_status = "True" if todo["completed"] else "False"
                 csv_writer.writerow(
                     [user_id, username, task_completed_status, todo["title"]]
-                    )
+                )
 
     except requests.exceptions.RequestException as e:
         print(f"Error: {e}")

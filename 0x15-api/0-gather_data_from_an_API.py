@@ -1,10 +1,20 @@
 #!/usr/bin/python3
+"""Python script that fulfills the given requirements"""
 
 import requests
 import sys
 
 
 def get_employee_todo_progress(employee_id):
+    """
+    Fetches and displays the progress of tasks for a given employee.
+
+    Parameters:
+    - employee_id (int): The ID of the employee.
+
+    Returns:
+    None
+    """
     base_url = "https://jsonplaceholder.typicode.com"
     user_url = f"{base_url}/users/{employee_id}"
     todos_url = f"{base_url}/todos?userId={employee_id}"
@@ -26,7 +36,7 @@ def get_employee_todo_progress(employee_id):
         # Display the progress information
         print(
             f"Employee {employee_name} is done with tasks({completed_tasks}/{total_tasks}): "
-            )
+        )
         # Display titles of completed tasks
         for todo in todos_data:
             if todo["completed"]:
