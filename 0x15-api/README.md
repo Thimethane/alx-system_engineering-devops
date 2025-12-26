@@ -12,7 +12,7 @@ This project is a simple task manager that retrieves tasks for multiple employee
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/your-username/task-manager.git
+    git clone https://github.com/Thimethane/task-manager.git
     ```
 
 2. Navigate to the project directory:
